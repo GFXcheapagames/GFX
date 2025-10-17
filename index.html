@@ -894,4 +894,96 @@ clearCart.addEventListener('click',()=>{
   
 renderCart(); // render cart on page load
   
-</script></body></html>
+</script>
+<!-- Login Button -->
+<button id="loginBtn" style="background:red;color:black;padding:8px 16px;border:none;border-radius:6px;cursor:pointer;">
+  Login
+</button>
+
+<!-- Login Popup -->
+<div id="loginPopup" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#00000088;justify-content:center;align-items:center;">
+  <div style="background:white;padding:20px;border-radius:10px;width:300px;text-align:center;">
+    <h3>Login / Signup</h3>
+    <input id="email" type="email" placeholder="Email (required)" style="width:90%;margin:6px 0;"><br>
+    <input id="phone" type="text" placeholder="Mobile (optional)" style="width:90%;margin:6px 0;"><br>
+    <input id="password" type="password" placeholder="Password (required)" style="width:90%;margin:6px 0;"><br>
+    <button id="submitLogin" style="background:red;color:black;padding:6px 14px;border:none;border-radius:5px;cursor:pointer;">Sign In / Up</button>
+    <p>or</p>
+    <button id="googleBtn" style="background:#4285F4;color:white;padding:6px 14px;border:none;border-radius:5px;cursor:pointer;">Sign in with Google</button>
+    <p id="msg" style="color:red;"></p>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+  // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDm5CwuDg6wQdGmyA9LWB7l3FP8yG9BS1o",
+  authDomain: "gfx-cheap-games.firebaseapp.com",
+  projectId: "gfx-cheap-games",
+  storageBucket: "gfx-cheap-games.firebasestorage.app",
+  messagingSenderId: "979059324821",
+  appId: "1:979059324821:web:3b2f2958c0fa0a69fde89c",
+  measurementId: "G-VCKXPPX03R"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const provider = new GoogleAuthProvider();
+
+  const loginBtn = document.getElementById('loginBtn');
+  const loginPopup = document.getElementById('loginPopup');
+  const submitLogin = document.getElementById('submitLogin');
+  const googleBtn = document.getElementById('googleBtn');
+  const msg = document.getElementById('msg');
+
+  loginBtn.onclick = () => loginPopup.style.display = 'flex';
+  loginPopup.onclick = e => { if(e.target===loginPopup) loginPopup.style.display='none'; };
+
+  submitLogin.onclick = async ()=>{
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    const password = document.getElementById('password').value;
+    if(!email || !password){ msg.textContent='Email and password required'; return; }
+    try{
+      const userCred = await signInWithEmailAndPassword(auth, email, password);
+      msg.style.color='green'; msg.textContent='Logged in!';
+      loginPopup.style.display='none';
+    }catch(err){
+      if(err.code==='auth/user-not-found'){
+        const userCred = await createUserWithEmailAndPassword(auth, email, password);
+        await setDoc(doc(db,'users',userCred.user.uid),{email,phone,createdAt:serverTimestamp()});
+        msg.style.color='green'; msg.textContent='Account created!';
+        loginPopup.style.display='none';
+      }else msg.textContent=err.message;
+    }
+  };
+
+  googleBtn.onclick = async ()=>{
+    try{
+      const result = await signInWithPopup(auth, provider);
+      await setDoc(doc(db,'users',result.user.uid),{email:result.user.email,createdAt:serverTimestamp()},{merge:true});
+      msg.style.color='green'; msg.textContent='Google login success!';
+      loginPopup.style.display='none';
+    }catch(e){ msg.textContent=e.message; }
+  };
+</script>
+
+
+</body>
+</html>
