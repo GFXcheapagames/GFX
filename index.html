@@ -1,57 +1,315 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GFX Game Store | The Cheapest Game Store</title>
-  <style>
-    body {font-family: Arial, sans-serif; background: #0e0e0e; color: white; margin: 0; padding: 0;}
-    header {background: #121212; padding: 20px; text-align: center; font-size: 24px; font-weight: bold; color: #00ff9d;}
-    .hero {text-align: center; padding: 60px 20px; background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);}
-    .hero h1 {font-size: 40px; margin: 0;}
-    .hero p {font-size: 18px; color: #bbb;}
-    .products {display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 40px;}
-    .product {background: #1a1a1a; border-radius: 10px; padding: 20px; text-align: center; transition: 0.3s;}
-    .product:hover {transform: scale(1.05); box-shadow: 0 0 15px #00ff9d44;}
-    .product img {width: 100%; border-radius: 10px;}
-    .product h3 {margin: 10px 0; color: #00ff9d;}
-    .product p {margin: 5px 0; color: #aaa;}
-    .buy-btn {display: inline-block; background: #00ff9d; color: black; padding: 10px 20px; margin-top: 10px; border-radius: 5px; text-decoration: none; font-weight: bold;}
-    footer {background: #121212; padding: 20px; text-align: center; font-size: 14px; color: #aaa;}
-    footer a {color: #00ff9d; text-decoration: none;}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GFX Cheap Games - Diwali Sale</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    font-family: 'Press Start 2P', cursive;
+    background:#0e0e0e;
+    color:#fff;
+}
+header {
+    background:#111;
+    padding:20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+header img { height:50px; }
+header h1 { font-size:20px; color:#00ffea; }
+nav a {
+    color:#fff;
+    margin-left:20px;
+    text-decoration:none;
+    font-size:14px;
+}
+.sale-banner {
+    background: linear-gradient(90deg, #ff9800, #ff4c4c);
+    text-align:center;
+    padding:20px;
+    font-size:16px;
+    font-weight:bold;
+    color:#fff;
+}
+.container {
+    max-width:1200px;
+    margin:30px auto;
+    padding:0 20px;
+}
+.products {
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:20px;
+}
+.product {
+    background:#1c1c1c;
+    padding:15px;
+    border-radius:10px;
+    transition:transform 0.3s;
+}
+.product:hover { transform:scale(1.05); }
+.product img { width:100%; border-radius:8px; }
+.product h2 { font-size:14px; margin:10px 0 5px; color:#00ffea; }
+.price { font-size:12px; }
+.original-price { text-decoration:line-through; color:#ff4c4c; margin-right:5px; }
+.discounted-price { color:#00ffea; font-weight:bold; }
+.buy-section { margin-top:10px; text-align:center; }
+.buy-section img { width:100px; margin-bottom:10px; }
+.buy-section p { font-size:12px; margin-bottom:5px; }
+.whatsapp-btn {
+    display:inline-block;
+    background:#25d366;
+    color:#fff;
+    padding:8px 12px;
+    border-radius:5px;
+    text-decoration:none;
+    font-size:12px;
+    transition:background 0.3s;
+}
+.whatsapp-btn:hover { background:#1ebe57; }
+footer {
+    background:#111;
+    text-align:center;
+    padding:15px;
+    margin-top:30px;
+    font-size:12px;
+    color:#888;
+}
+</style>
 </head>
 <body>
-  <header>Welcome to GFX Game Store | The Cheapest Game Store</header>
-  <div class="hero">
-    <h1>Buy Premium PC Games at the Cheapest Prices</h1>
-    <p>Instant delivery within 24 hours • Safe & Secure • Trusted by 500+ Gamers</p>
-  </div>
-  <div class="products">
-    <div class="product">
-      <img src="https://i.imgur.com/TnKzI0b.jpg" alt="GTA V">
-      <h3>GTA V (PC)</h3>
-      <p>₹499</p>
-      <a class="buy-btn" href="https://wa.me/917973156083?text=I%20want%20to%20buy%20GTA%20V%20(PC)">Buy Now</a>
-    </div>
-    <div class="product">
-      <img src="https://i.imgur.com/8zX3ZyT.jpg" alt="Red Dead Redemption 2">
-      <h3>Red Dead Redemption 2</h3>
-      <p>₹799</p>
-      <a class="buy-btn" href="https://wa.me/917973156083?text=I%20want%20to%20buy%20Red%20Dead%20Redemption%202">Buy Now</a>
-    </div>
-    <div class="product">
-      <img src="https://i.imgur.com/GkBbyF3.jpg" alt="FIFA 23">
-      <h3>FIFA 23</h3>
-      <p>₹599</p>
-      <a class="buy-btn" href="https://wa.me/917973156083?text=I%20want%20to%20buy%20FIFA%2023">Buy Now</a>
-    </div>
-  </div>
-  <footer>
-    <p>Contact us via WhatsApp: <a href="https://wa.me/917973156083">+91 7973156083</a></p>
-    <p>Email: <a href="mailto:gfxcheapestgames7973@gmail.com">gfxcheapestgames7973@gmail.com</a></p>
-    <p>Payments accepted via UPI (BHIM / Paytm / GPay)</p>
-  </footer>
-</body>
-</html>
+
+<header>
+    <img src="logo.png" alt="GFX Cheap Games Logo">
+    <h1>GFX Cheap Games</h1>
+    <nav>
+        <a href="#games">Games</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
+
+<div class="sale-banner">
+🎉 Diwali Sale! Up to 80% OFF on Steam Games! 🎮
+</div>
+
+<div class="container" id="games">
+    <div class="products">
+
+        <!-- Den Ring -->
+        <div class="product">
+            <img src="den_ring.jpg" alt="Den Ring">
+            <h2>Den Ring</h2>
+            <div class="price"><span class="original-price">₹478</span> <span class="discounted-price">₹239</span></div>
+            <div class="buy-section">
+                <img src="gpay.png" alt="Pay with GPay">
+                <p>Pay via GPay & message your number on WhatsApp</p>
+                <a class="whatsapp-btn" href="https://wa.me/917973156083?text=Hi%20I%20want%20to%20buy%20Den%20Ring">Message on WhatsApp</a>
+            </div>
+        </div>
+
+        <!-- Red Dead Redemption 2 -->
+        <div class="product">
+            <img src="rdr2.jpg" alt="Red Dead Redemption 2">
+            <h2>Red Dead Redemption 2</h2>
+            <div class="price"><span class="original-price">₹398</span> <span class="discounted-price">₹199</span></div>
+            <div class="buy-section">
+                <img src="gpay.png" alt="Pay with GPay">
+                <p>Pay via GPay & message your number on WhatsApp</p>
+                <a class="whatsapp-btn" href="https://wa.me/917973156083?text=Hi%20I%20want%20to%20buy%20Red%20Dead%20Redemption%202">Message on WhatsApp</a>
+            </div>
+        </div>
+
+        <!-- Grand Theft Auto V -->
+        <div class="product">
+            <img src="gta_v.jpg" alt="Grand Theft Auto V">
+            <h2>Grand Theft Auto V</h2>
+            <div class="price"><span class="original-price">₹398</span> <span class="discounted-price">₹199</span></div>
+            <div class="buy-section">
+                <img src="gpay.png" alt="Pay with GPay">
+                <p>Pay via GPay & message your number on WhatsApp</p>
+                <a class="whatsapp-btn" href="https://wa.me/917973156083?text=Hi%20I%20want%20to%20buy%20GTA%20V">Message on WhatsApp</a>
+            </div>
+        </div>
+
+        <!-- Cyberpunk 2077 -->
+        <div class="product">
+            <img src="cyberpunk2077.jpg" alt="Cyberpunk 2077">
+            <h2>Cyberpunk 2077</h2>
+            <div class="price"><span class="original-price">₹398</span> <span class="discounted-price">₹199</span></div>
+            <div class="buy-section">
+                <img src="gpay.png" alt="Pay with GPay">
+                <p>Pay via GPay & message your number on WhatsApp</p>
+                <a class="whatsapp-btn" href="https://wa.me/917973156083?text=Hi%20I%20want%20to%20buy%20Cyberpunk%202077">Message on WhatsApp</a>
+            </div>
+        </div>
+
+        <!-- The Witcher 3 -->
+        <div class="product">
+            <img src="witcher3.jpg" alt="The Witcher 3: Wild Hunt – GOTY Edition">
+            <h2>The Witcher 3: Wild Hunt – GOTY Edition</h2>
+            <div class="price"><span class="original-price">₹398</span> <span class="discounted-price">₹199</span></div>
+            <div class="buy-section">
+                <img src="gpay.png" alt="Pay with GPay">
+                <p>Pay via GPay & message your number on WhatsApp</p>
+                <a class="whatsapp-btn" href="https://wa.me/917973156083?text=Hi%20I%20want%20to%20buy%20The%20Witcher%203">Message on WhatsApp</a>
+            </div>
+        </div>
+
+        <!-- Sekiro: Shadows Die Twice -->
+        <div class="product">
+            <img src="sekiro.jpg" alt="Sekiro: Shadows Die Twice">
+            <h2>Sekiro: Shadows Die Twice</h2>
+            <div class="price"><span class="original-price">₹398</span> <span class="discounted-price">₹199</span></div>
+            <div class="buy-section">
+                <img src="gpay.png" alt="Pay with GPay">
+                <p>Pay via GPay & message your number on WhatsApp</p>
+                <a class="whatsapp-btn" href="https://wa.me/917973156083?text=Hi%20I%20want%20to%20buy%20Sekiro">Message on WhatsApp</a>
+            </div>
+        </div>
+
+        <!-- Dark Souls III -->
+        <div class="product">
+            <img src="darksouls3.jpg" alt="Dark Souls III">
+            <h2>Dark Souls III</h2>
+            <div class="price"><span class="original-price">₹398</span> <span class="discounted-price">₹199</span></div>
+            <div class="buy-section">
+                <img src="gpay.png" alt="Pay with GPay">
+                <p>Pay via GPay & message your number on WhatsApp</p>
+                <a class="whatsapp-btn" href="https://wa.me/917973156083?text=Hi%20I%20want%20to%20buy%20Dark%20Souls%20III">Message on WhatsApp</a>
+            </div>
+        </div>
+
+        <!-- Dark Souls Remastered -->
+        <div class="product">
+            <img src="darksouls_remastered.jpg" alt="Dark Souls Remastered">
+            <h2>Dark Souls Remastered</h2>
+            <div class="price"><span class="original-price">₹358</span> <span class="discounted-price">₹179</span></div>
+            <div class="buy-section">
+                <img src="gpay.png" alt="Pay with GPay">
+                <p>Pay via GPay & message your number on WhatsApp</p>
+                <a class="whatsapp-btn" href="https://wa.me/917973156083?text=Hi%20I%20want%20to%20buy%20Dark%20Souls%20Remastered">Message on WhatsApp</a>
+            </div>
+        </div>
+
+        <!-- Horizon Zero Dawn -->
+        <div class="product">
+            <img src="horizon.jpg" alt="Horizon Zero Dawn Complete Edition">
+            <h2>Horizon Zero Dawn Complete Edition</h2>
+            <div class="price"><span class="original-price">₹498</span> <span class="discounted-price">₹249</span></div>
+            <div class="buy-section">
+                <img src="gpay.png" alt="Pay with GPay">
+                <p>Pay via GPay & message your number on WhatsApp</p>
+                <a class="whatsapp-btn" href="https://wa.me/917973156083?text=Hi%20I%20want%20to%20buy%20Horizon%20Zero%20Dawn">Message on WhatsApp</a>
+            </div>
+        </div>
+
+        <!-- God of War (2018) -->
+        <div class="product">
+            <img src="god_of_war.jpg" alt="God of War (2018)">
+            <h2>God of War (2018)</h2>
+            <div class="price"><span class="original-price">₹398</span> <span class="discounted-price">₹199</span></div>
+            <div class="buy-section">
+                <img src="gpay.png" alt="Pay with GPay">
+                <p>Pay via GPay & message your number on WhatsApp</p>
+                <a class="whatsapp-btn" href="https://wa.me/917973156083?text=Hi%20I%20want%20to%20buy%20God%20of%20War">Message on WhatsApp</a>
+            </div>
+        </div>
+
+        <!-- Resident Evil 2 -->
+        <div class="product">
+            <img src="re2.jpg" alt="Resident Evil 2">
+            <h2>Resident Evil 2</h2>
+            <div class="price"><span class="original-price">₹398</span> <span class="discounted-price">₹199</span></div>
+            <div class="buy-section">
+                <img src="gpay.png" alt="Pay with GPay">
+                <p>Pay via GPay & message your number on WhatsApp</p>
+                <a class="whatsapp-btn" href="https://wa.me/917973156083?text=Hi%20I%20want%20to%20buy%20Resident%20Evil%202">Message on WhatsApp</a>
+            </div>
+        </div>
+
+        <!-- Resident Evil 3 -->
+        <div class="product">
+            <img src="re3.jpg" alt="Resident Evil 3">
+            <h2>Resident Evil 3</h2>
+            <div class="price"><span class="original-price">₹398</span> <span class="discounted-price">₹199</span></div>
+            <div class="buy-section">
+                <img src="gpay.png" alt="Pay with GPay">
+                <p>Pay via GPay & message your number on WhatsApp</p>
+                <a class="whatsapp-btn" href="https://wa.me/917973156083?text=Hi%20I%20want%20to%20buy%20Resident%20Evil%203">Message on WhatsApp</a>
+            </div>
+        </div>
+
+        <!-- Resident Evil 4 -->
+        <div class="product">
+            <img src="re4.jpg" alt="Resident Evil 4">
+            <h2>Resident Evil 4</h2>
+            <div class="price"><span class="original-price">₹498</span> <span class="discounted-price">₹249</span></div>
+            <div class="buy-section">
+                <img src="gpay.png" alt="Pay with GPay">
+                <p>Pay via GPay & message your number on WhatsApp</p>
+                <a class="whatsapp-btn" href="https://wa.me/917973156083?text=Hi%20I%20want%20to%20buy%20Resident%20Evil%204">Message on WhatsApp</a>
+            </div>
+        </div>
+
+        <!-- Resident Evil 7 -->
+        <div class="product">
+            <img src="re7.jpg" alt="Resident Evil 7">
+            <h2>Resident Evil 7</h2>
+            <div class="price"><span class="original-price">₹398</span> <span class="discounted-price">₹199</span></div>
+            <div class="buy-section">
+                <img src="gpay.png" alt="Pay with GPay">
+                <p>Pay via GPay & message your number on WhatsApp</p>
+                <a class="whatsapp-btn" href="https://wa.me/917973156083?text=Hi%20I%20want%20to%20buy%20Resident%20Evil%207">Message on WhatsApp</a>
+            </div>
+        </div>
+
+        <!-- GTA Vice City -->
+        <div class="product">
+            <img src="gta_vc.jpg" alt="Grand Theft Auto Vice City">
+            <h2>Grand Theft Auto Vice City</h2>
+            <div class="price"><span class="original-price">₹100</span> <span class="discounted-price">₹50</span></div>
+            <div class="buy-section">
+                <img src="gpay.png" alt="Pay with GPay">
+                <p>Pay via GPay & message your number on WhatsApp</p>
+                <a class="whatsapp-btn" href="https://wa.me/917973156083?text=Hi%20I%20want%20to%20buy%20GTA%20Vice%20City">Message on WhatsApp</a>
+            </div>
+        </div>
+
+        <!-- Days Gone -->
+        <div class="product">
+            <img src="days_gone.jpg" alt="Days Gone">
+            <h2>Days Gone</h2>
+            <div class="price"><span class="original-price">₹398</span> <span class="discounted-price">₹199</span></div>
+            <div class="buy-section">
+                <img src="gpay.png" alt="Pay with GPay">
+                <p>Pay via GPay & message your number on WhatsApp</p>
+                <a class="whatsapp-btn" href="https://wa.me/917973156083?text=Hi%20I%20want%20to%20buy%20Days%20Gone">Message on WhatsApp</a>
+            </div>
+        </div>
+
+        <!-- Assassin’s Creed Odyssey -->
+        <div class="product">
+            <img src="ac_odyssey.jpg" alt="Assassin’s Creed Odyssey">
+            <h2>Assassin’s Creed Odyssey</h2>
+            <div class="price"><span class="original-price">₹598</span> <span class="discounted-price">₹299</span></div>
+            <div class="buy-section">
+                <img src="gpay.png" alt="Pay with GPay">
+                <p>Pay via GPay & message your number on WhatsApp</p>
+                <a class="whatsapp-btn" href="https://wa.me/917973156083?text=Hi%20I%20want%20to%20buy%20Assassin%27s%20Creed%20Odyssey">Message on WhatsApp</a>
+            </div>
+        </div>
+
+        <!-- Assassin’s Creed Origins -->
+        <div class="product">
+            <img src="ac_origins.jpg" alt="Assassin’s Creed Origins">
+            <h2>Assassin’s Creed Origins</h2>
+            <div class="price"><span class="original-price">₹430</span> <span class="discounted-price">₹215</span></div>
+            <div class="buy-section">
+                <img src="gpay.png" alt="Pay with GPay">
+                <p>Pay via GPay & message your number on WhatsApp</p>
+                <a class="whatsapp-btn" href="https://wa.me/917973156083?text=Hi%20I%20want%20to%20buy%20Assassin%27s%20Creed%20Origins">Message on WhatsApp</a>
+            </
