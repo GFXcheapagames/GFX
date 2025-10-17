@@ -5,7 +5,58 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GFX Cheap Games - Diwali Sale</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+
+<button id="googleSignIn">Sign in with Google</button>
+<script>
+  const provider = new firebase.auth.GoogleAuthProvider();
+  document.getElementById('googleSignIn').addEventListener('click', () => {
+    auth.signInWithPopup(provider)
+      .then((result) => {
+        const user = result.user;
+        console.log("User info:", user.displayName, user.email, user.photoURL);
+        // You can now send this user info to your backend or Netlify function
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  });
+</script>
+
+
+<!-- Firebase App (core SDK) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+<!-- Firebase Auth SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
+
 <style>
+  fetch("/.netlify/functions/save-user", {
+  method: "POST",
+  body: JSON.stringify({ name: user.displayName, email: user.email })
+});
+
+  // netlify/functions/save-user.js
+export async function handler(event, context) {
+  const data = JSON.parse(event.body);
+  // data contains user info: name, email, photoURL
+  // Save to your DB here
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: "User saved!" })
+  };
+}
+
+  const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
 *{margin:0;padding:0;box-sizing:border-box;}
 body{
   font-family:'Orbitron',sans-serif;
