@@ -423,7 +423,7 @@ nav a{color:#fff;margin-left:20px;text-decoration:none;font-size:16px;}
 
 <!-- Popup -->
 <div id="loginPopup" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);">
-  <div style="background:white;padding:30px;border-radius:10px;max-width:350px;margin:100px auto;text-align:center;">
+  <div style="background:rgb(255, 45, 45);padding:30px;border-radius:10px;max-width:350px;margin:100px auto;text-align:center;">
     <h2>Login / Sign Up</h2>
     <input id="email" placeholder="Email" required><br><br>
     <input id="phone" placeholder="Mobile (optional)"><br><br>
@@ -436,41 +436,70 @@ nav a{color:#fff;margin-left:20px;text-decoration:none;font-size:16px;}
   </div>
 </div>
 
+ <!-- Firebase SDKs (compat versions to support older syntax) -->
+  <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore-compat.js"></script>
+
 <script>
   document.getElementById("loginBtn").onclick = () => {
     document.getElementById("loginPopup").style.display = "block";
   };
 
-  // Handle email login/signup
-  document.getElementById("submitBtn").onclick = async () => {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+ const firebaseConfig = {
+  apiKey: "AIzaSyDm5CwuDg6wQdGmyA9LWB7l3FP8yG9BS1o",
+  authDomain: "gfx-cheap-games.firebaseapp.com",
+  projectId: "gfx-cheap-games",
+  storageBucket: "gfx-cheap-games.firebasestorage.app",
+  messagingSenderId: "979059324821",
+  appId: "1:979059324821:web:3b2f2958c0fa0a69fde89c",
+  measurementId: "G-VCKXPPX03R"
+};
 
-    try {
-      // Try to log in
-      await auth.signInWithEmailAndPassword(email, password);
-      alert("Welcome back!");
-    } catch (err) {
-      // If user not found, sign them up
-      await auth.createUserWithEmailAndPassword(email, password);
-      alert("Account created!");
-    }
-    document.getElementById("loginPopup").style.display = "none";
-  };
+    // ✅ Initialize Firebase (compat)
+    firebase.initializeApp(firebaseConfig);
 
-  // Handle Google Sign-In
-  document.getElementById("googleBtn").onclick = async () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    try {
-      await auth.signInWithPopup(provider);
-      alert("Signed in with Google!");
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // 🔘 Open popup
+    document.getElementById("loginBtn").onclick = () => {
+      document.getElementById("loginPopup").style.display = "block";
+    };
+
+    // 🔘 Email login/signup
+    document.getElementById("submitBtn").onclick = async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        await auth.signInWithEmailAndPassword(email, password);
+        alert("Welcome back!");
+      } catch (err) {
+        if (err.code === "auth/user-not-found") {
+          await auth.createUserWithEmailAndPassword(email, password);
+          alert("Account created!");
+        } else {
+          alert("Error: " + err.message);
+        }
+      }
+
       document.getElementById("loginPopup").style.display = "none";
-    } catch (error) {
-      console.error(error);
-      alert("Error signing in with Google.");
-    }
-  };
-</script>
+    };
+
+    // 🔘 Google Sign-In
+    document.getElementById("googleBtn").onclick = async () => {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      try {
+        await auth.signInWithPopup(provider);
+        alert("Signed in with Google!");
+        document.getElementById("loginPopup").style.display = "none";
+      } catch (error) {
+        console.error(error);
+        alert("Error signing in with Google: " + error.message);
+      }
+    };
+  </script>
 
 
 
