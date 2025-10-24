@@ -97,6 +97,37 @@
     .total-row{font-size:22px} 
     .upi{font-size:18px} 
   }
+
+{
+      font-family: 'Orbitron', sans-serif;
+      background: #0b0b0b;
+      color: #fff;
+      text-align: center;
+      padding: 40px;
+    }
+    .cart-item {
+      background: #1a1a1a;
+      margin: 10px auto;
+      padding: 10px;
+      border-radius: 10px;
+      width: 80%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    img { width: 60px; height: 60px; border-radius: 8px; }
+    .total { margin-top: 20px; font-size: 22px; color: #0ff; }
+    button {
+      margin-top: 25px;
+      padding: 12px 25px;
+      border: none;
+      background: linear-gradient(90deg,#ff0000,#ff2e2e);
+      color: #000;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
 </style>
 </head>
 <body>
@@ -111,9 +142,12 @@
       <h3>Your selected games</h3>
       <div id="itemsList"></div>
       <div id="itemsEmpty" class="empty">No items in cart.</div>
-      <div class="total-row">
-        <div>Total</div>
-        <div id="grandTotal">₹0</div>
+        <div id="checkout-items"></div>
+        <div class="total-row">
+  <h3>Total: <span id="grandTotal">₹0</span></h3>
+</div>
+
+
       </div>
       <div class="buttons">
         <button class="btn cancel" id="cancelBtn">Cancel</button>
@@ -151,59 +185,66 @@
 </div>
 
 <script>
-const CART_KEY = 'gfx_cart';
-
-function readCart() {
-  try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); } catch(e){ return []; }
+function escapeHtml(text) {
+  return (text+'').replace(/[&<>"']/g, function(m){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+  });
 }
 
-function formatPrice(n){ return '₹' + Number(n||0).toFixed(0); }
+function formatPrice(n){ return '₹' + Number(n||0).toFixed(2); }
 
-function renderCheckoutItems(){
-  const items = readCart();
+function loadCart() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
   const list = document.getElementById('itemsList');
   const empty = document.getElementById('itemsEmpty');
+  const totalDisplay = document.getElementById('grandTotal');
+
   list.innerHTML = '';
-  if (!items || items.length === 0){
+  let total = 0;
+
+  if(cart.length === 0){
     empty.style.display = 'block';
-    document.getElementById('grandTotal').innerText = '₹0';
+    totalDisplay.innerText = '₹0';
     return;
   }
+
   empty.style.display = 'none';
-  let total = 0;
-  items.forEach(it => {
-    total += Number(it.price || 0);
+
+  cart.forEach(item => {
+    const imgSrc = item.img || item.image || 'placeholder.png';
+    const quantity = item.quantity || 1;
+    const price = parseFloat(item.price) || 0;
+
     const row = document.createElement('div');
     row.className = 'item-row';
     row.innerHTML = `
-      <img src="${it.img}" alt="${escapeHtml(it.name)}">
+      <img src="${imgSrc}" alt="${escapeHtml(item.name)}">
       <div style="flex:1">
-        <div class="item-name">${escapeHtml(it.name)}</div>
-        <div class="item-price">${formatPrice(it.price)}</div>
+        <div class="item-name">${escapeHtml(item.name)}</div>
+        <div class="item-price">₹${(price * quantity).toFixed(2)} (x${quantity})</div>
       </div>
     `;
     list.appendChild(row);
+
+    total += price * quantity;
   });
-  document.getElementById('grandTotal').innerText = formatPrice(total);
+
+  totalDisplay.innerText = formatPrice(total);
 }
 
-function escapeHtml(text) {
-  return (text+'').replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; });
-}
+// Call only this one
+window.onload = loadCart;
 
 // Copy UPI
 document.getElementById('copyUpi').addEventListener('click', () => {
   const upiText = document.getElementById('upiId').innerText;
-  navigator.clipboard.writeText(upiText).then(() => { alert('UPI ID copied to clipboard!'); });
+  navigator.clipboard.writeText(upiText).then(() => { alert('UPI ID copied!'); });
 });
 
 // Buttons
 document.getElementById('cancelBtn').addEventListener('click', () => { window.location.href = 'index.html'; });
 document.getElementById('doneBtn').addEventListener('click', () => { document.getElementById('donePopup').style.display = 'flex'; });
 document.getElementById('closeDone').addEventListener('click', () => { document.getElementById('donePopup').style.display = 'none'; });
-
-// Render on load
-renderCheckoutItems();
 </script>
 </body>
 </html>
