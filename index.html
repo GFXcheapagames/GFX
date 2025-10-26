@@ -1,547 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GFX Cheap Games - Diwali Sale</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
-    <style>
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{
-  font-family:'Orbitron',sans-serif;
-  background:#0b0b0b;
-  color:#fff;
-  overflow-x:hidden;
-  }
-  
-header{
-  background:#111;
-   padding:20px;
-  display:flex;
-  align-items:center;
-   justify-content:space-between;
-  }
-  
-header img{height:50px;}
-header h1{font-size:35px;color:#0ff;text-shadow:0 0 10px #0ff;}
-nav a{color:#fff;margin-left:20px;text-decoration:none;font-size:16px;}
-  
-.sale-banner{
-  background:linear-gradient(90deg,#ff8c00,#ff2e2e);
-  text-align:center;
-   padding:25px;
-   font-size:18px;
-   font-weight:bold;
-   color:#fff;
-   text-shadow:0 0 8px #fff;
-  }
-  .container{max-width:1200px;margin:30px auto;padding:0 20px;}
-  .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
- .product{
-   background:#1c1c1c;
-   padding:15px;
-   border-radius:12px;
-  text-align:center;
-  transition:transform 0.3s,box-shadow 0.3s;
-  
-}
-  
-.product:hover{
-   transform:scale(1.05);
-   box-shadow:0 0 20px #0ff;
-  }
-  .product img{width:100%;border-radius:10px;}
-  .product h2{font-size:20px;margin:10px 0 5px;color:#0ff;text-shadow:0 0 8px #ff2e2e;}
-  .price{font-size:25px;margin-bottom:15px;}
-  .original-price{text-decoration:line-through;color:#ff4c4c;margin-right:5px;}
-    .discounted-price{color:#fff;font-weight:bold;}
-  .add-btn{display:inline-block;background:#ff9800;color:#000;padding:8px 15px;border-radius:8px;font-weight:bold;cursor:pointer;transition:0.5s;text-decoration:none;
-  }
-  
-  /* Cart styles */
-.cart-container { position:relative; display:inline-block; }
-#cartBtn { background:#ff9800;color:#000;padding:8px 15px;border-radius:8px;cursor:pointer;font-weight:bold; }
-.modal-backdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);z-index:999}
-.modal.cart-modal{width:360px;max-width:92%;background:#111;border:1px solid rgba(255,0,0,0.08);padding:22px;border-radius:14px;box-shadow:0 10px 40px rgba(0,0,0,0.6);display:flex;flex-direction:column;gap:10px;max-height:80vh;overflow-y:auto;}
-.modal.cart-modal h2{margin:0 0 14px;color:#ff2e2e;font-size:18px;letter-spacing:1px;text-align:center;}
-.cart-item{display:flex;justify-content:space-between;align-items:center;margin:8px 0;}
-.cart-item img{width:50px;height:50px;border-radius:6px;object-fit:cover;}
-.cart-total{font-weight:bold;margin-top:10px;text-align:right;}
-.actions{display:flex;justify-content:space-between;margin-top:15px;}
-.actions .btn{padding:10px 15px;border-radius:8px;border:none;font-weight:700;cursor:pointer;}
-.btn-primary{background:linear-gradient(90deg,#ff0000,#ff2e2e);color:#000;}
-</style>
-</head>
-
-<body>
-  <header>
-    <img src="logo.JPG" alt="GFX Cheap Games" height="300" width="80">
-    <h1>GFX Cheap Games</h1>
-
-     <!-- Cart Button -->
-    <div class="cart-container">
-      <button id="cartBtn">🛒 Cart (<span id="cartCount">0</span>)</button>
-      <div id="cartModal" class="modal-backdrop">
-        <div class="modal cart-modal">
-          <h2>Your Cart</h2>
-          <div id="cartItems"></div>
-          <div class="cart-total">Total: ₹<span id="cartTotal">0</span></div>
-          <div class="actions">
-            <button id="checkoutBtn" class="btn btn-primary">Checkout</button>
-            <button id="cancelBtn" class="btn">Cancel</button>
-          </div>
-        </div>
-      </div>
-    </div>
-</header>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Login with Firebase</title>
 <style>
-  :root{
-    --bg:#0b0b0b; --panel:#111; --accent:#ff2e2e; --accent-2:#ff0000; --muted:#a8a8a8;
+  body {
+    background-color: #0d0d0d;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
   }
-  body{margin:0;font-family:'Orbitron',sans-serif;background:var(--bg);color:#fff;-webkit-font-smoothing:antialiased}
-  header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;background:#111;border-bottom:1px solid rgba(255,0,0,0.06)}
-  .brand{display:flex;align-items:center;gap:14px}
-  .brand img{height:44px;width:44px;border-radius:8px;object-fit:cover}
-  .brand h1{font-size:20px;color:var(--accent);margin:0;text-shadow:0 0 8px rgba(255,46,46,0.08)}
-  #loginBtn{background:linear-gradient(90deg,var(--accent-2),var(--accent));color:#000;border:none;padding:8px 14px;border-radius:8px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(255,0,0,0.12)}
-  /* Modal common */
-  .modal-backdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);z-index:999}
-  .modal{width:360px;max-width:92%;background:var(--panel);border:1px solid rgba(255,0,0,0.08);padding:22px;border-radius:14px;box-shadow:0 10px 40px rgba(0,0,0,0.6)}
-  .modal h2{margin:0 0 14px;color:var(--accent);font-size:18px;letter-spacing:1px}
-  .field{margin:10px 0}
-  .field input{width:100%;padding:10px;border-radius:8px;border:none;background:#1a1a1a;color:#fff;font-size:15px}
-  .actions{display:flex;flex-direction:column;gap:10px;margin-top:12px}
-  .btn{padding:11px;border-radius:8px;border:none;font-weight:700;cursor:pointer}
-  .btn-primary{background:linear-gradient(90deg,var(--accent-2),var(--accent));color:#000}
-  .btn-google{background:#fff;color:#111;display:flex;align-items:center;gap:10px;justify-content:center}
-  .muted{color:var(--muted);font-size:13px;margin-top:8px;text-align:center}
-
+  .login-btn, .profile-btn {
+    background: red;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.2s;
+  }
+  .login-btn:hover, .profile-btn:hover {
+    background: #ff3333;
+  }
+  .popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1a1a1a;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px red;
+    width: 350px;
+  }
+  .popup input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 5px;
+  }
+  .popup button {
+    margin-top: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .cancel-btn {
+    background: gray;
+    color: white;
+    margin-right: 10px;
+  }
+  .google-btn {
+    background: white;
+    color: black;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 10px;
+  }
+  .profile-popup {
+    display: none;
+    background: #1a1a1a;
+    box-shadow: 0 0 20px red;
+    padding: 20px;
+    border-radius: 10px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+  }
 </style>
 </head>
 <body>
 
-
-
-
-
-
-
-
-</header>
-<div class="sale-banner">🎮 Diwali Sale! Up to 50% OFF on Steam Games! 🎮</div>
-<div class="container"><div class="products" id="productList">
-
-     <!--  Product -->
-
-    <div class="product" data-name="Grand Theft Auto V" data-price="199">
-
-        <img src="gta5.jfif" alt="Grand Theft Auto V">
-
-        <h2>Grand Theft Auto V</h2>
-
-        <div class="price"><span class="original-price">₹399</span> <span class="discounted-price">₹199</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="Red Dead Redemption 2" data-price="199">
-
-        <img src="rdr2.jfif" alt="Red Dead Redemption 2">
-
-        <h2>Red Dead Redemption 2</h2>
-
-        <div class="price"><span class="original-price">₹399</span> <span class="discounted-price">₹199</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="Elden Ring" data-price="239">
-
-        <img src="eldr.jpg" alt="Elden Ring">
-
-        <h2>Elden Ring</h2>
-
-        <div class="price"><span class="original-price">₹480</span> <span class="discounted-price">₹239</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="Cyberpunk 2077" data-price="199">
-
-        <img src="cyber.jpg" alt="Cyberpunk 2077">
-
-        <h2>Cyberpunk 2077</h2>
-
-        <div class="price"><span class="original-price">₹399</span> <span class="discounted-price">₹199</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="The Witcher 3:Wild Hunt - GOTY Edition" data-price="199">
-
-        <img src="witcher3.jfif" alt="The Witcher 3:Wild Hunt - GOTY Edition">
-
-        <h2>The Witcher 3:Wild Hunt - GOTY Edition</h2>
-
-        <div class="price"><span class="original-price">₹399</span> <span class="discounted-price">₹199</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="Sekiro: Shadows Die Twice" data-price="199">
-
-        <img src="sekiro.jfif" alt="Sekiro: Shadows Die Twice">
-
-        <h2>Sekiro: Shadows Die Twice</h2>
-
-        <div class="price"><span class="original-price">₹398</span> <span class="discounted-price">₹199</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="Dark Souls 3" data-price="199">
-
-        <img src="dark3.jfif" alt="Dark Souls 3">
-
-        <h2>Dark Souls 3</h2>
-
-        <div class="price"><span class="original-price">₹399</span> <span class="discounted-price">₹199</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="Dark Souls Remastered" data-price="179">
-
-        <img src="remastered.jfif" alt="Dark Souls Remastered">
-
-        <h2>Dark Souls Remastered</h2>
-
-        <div class="price"><span class="original-price">₹320</span> <span class="discounted-price">₹179</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="Horizon Zero Dawn Complete Edition" data-price="249">
-
-        <img src="horizon.jfif" alt="Horizon Zero Dawn Complete Edition">
-
-        <h2>Horizon Zero Dawn Complete Edition</h2>
-
-        <div class="price"><span class="original-price">₹499</span> <span class="discounted-price">₹249</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="God Of War" data-price="199">
-
-        <img src="godofwar.jfif" alt="God Of War">
-
-        <h2>God Of War</h2>
-
-        <div class="price"><span class="original-price">₹399</span> <span class="discounted-price">₹199</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="Resident Evil 2" data-price="199">
-
-        <img src="2.jfif" alt="Resident Evil 2">
-
-        <h2>Resident Evil 2</h2>
-
-        <div class="price"><span class="original-price">₹399</span> <span class="discounted-price">₹199</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="Resident Evil 3" data-price="199">
-
-        <img src="3.jpeg" alt="Resident Evil 3">
-
-        <h2>Resident Evil 3</h2>
-
-        <div class="price"><span class="original-price">₹399</span> <span class="discounted-price">₹199</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="Resident Evil 4" data-price="249">
-
-        <img src="4.png" alt="Resident Evil 4">
-
-        <h2>Resident Evil 4</h2>
-
-        <div class="price"><span class="original-price">₹499</span> <span class="discounted-price">₹249</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="Resident Evil 7" data-price="199">
-
-        <img src="7.jfif" alt="Resident Evil 7">
-
-        <h2>Resident Evil 7</h2>
-
-        <div class="price"><span class="original-price">₹399</span> <span class="discounted-price">₹199</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="Grand Theft Auto: Vice City" data-price="50">
-
-        <img src="gtavc.jpg" alt="Grand Theft Auto: Vice City">
-
-        <h2>Grand Theft Auto: Vice City</h2>
-
-        <div class="price"><span class="original-price">₹100</span> <span class="discounted-price">₹50</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="Days Gone" data-price="199">
-
-        <img src="daysgone.jfif" alt="Days Gone">
-
-        <h2>Days Gone</h2>
-
-        <div class="price"><span class="original-price">₹399</span> <span class="discounted-price">₹199</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="Assassin's Creed: Odyssey" data-price="299">
-
-        <img src="odyssey.jfif" alt="Assassin's Creed: Odyssey">
-
-        <h2>Assassin's Creed: Odyssey</h2>
-
-        <div class="price"><span class="original-price">₹499</span> <span class="discounted-price">₹299</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="Assassin's Creed: Origins" data-price="215">
-
-        <img src="origins.jfif" alt="Assassin's Creed: Origins">
-
-        <h2>Assassin's Creed: Origins</h2>
-
-        <div class="price"><span class="original-price">₹429</span> <span class="discounted-price">₹215</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="Assassin's Creed: Valhalla" data-price="199">
-
-        <img src="valhalla.jfif" alt="Assassin's Creed: Valhalla">
-
-        <h2>Assassin's Creed:Valhalla</h2>
-
-        <div class="price"><span class="original-price">₹399</span> <span class="discounted-price">₹199</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="Watch Dogs 2" data-price="239">
-
-        <img src="dos2.jfif" alt="Watch Dogs 2">
-
-        <h2>Watch Dogs 2</h2>
-
-        <div class="price"><span class="original-price">₹479</span> <span class="discounted-price">₹239</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="Black Myth Wukong" data-price="239">
-
-        <img src="wukong.jfif" alt="Black Myth Wukong">
-
-        <h2>Black Myth Wukong</h2>
-
-        <div class="price"><span class="original-price">₹479</span> <span class="discounted-price">₹239</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="A Way Out" data-price="299">
-
-        <img src="wayout.jfif" alt="A Way Out">
-
-        <h2>A Way Out</h2>
-
-        <div class="price"><span class="original-price">₹599</span> <span class="discounted-price">₹299</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="Assassin's Creed Deluxe Edition" data-price="299">
-
-        <img src="deluxe.jfif" alt="Assassin's Creed Deluxe Edition">
-
-        <h2>Assassin's Creed Deluxe Edition</h2>
-
-        <div class="price"><span class="original-price">₹599</span> <span class="discounted-price">₹299</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
-
-
-    <div class="product" data-name="WWE2 k24" data-price="299">
-
-        <img src="2k24.jfif" alt="WWE 2k24">
-
-        <h2>WWE 2k24</h2>
-
-        <div class="price"><span class="original-price">₹599</span> <span class="discounted-price">₹299</span></div>
-
-        <button class="add-btn">Add to Cart</button>
-
-    </div>
-
+<button id="loginBtn" class="login-btn">Login</button>
+
+<div id="loginPopup" class="popup">
+  <h2>Login / Sign Up</h2>
+  <input type="email" id="email" placeholder="Email (Required)" required>
+  <input type="text" id="mobile" placeholder="Mobile Number (Optional)">
+  <input type="password" id="password" placeholder="Password (Required)" required>
+  <button id="googleSignIn" class="google-btn">Sign in with Google</button><br>
+  <button id="cancelBtn" class="cancel-btn">Cancel</button>
+  <button id="submitLogin" style="background:red;color:white;">Login</button>
 </div>
-<script>
-const cartBtn = document.getElementById('cartBtn');
-const cartModal = document.getElementById('cartModal');
-const cartItemsContainer = document.getElementById('cartItems');
-const cartTotalEl = document.getElementById('cartTotal');
-const checkoutBtn = document.getElementById('checkoutBtn');
-const cancelBtn = document.getElementById('cancelBtn');
-const addBtns = document.querySelectorAll('.add-btn');
-const cartCountEl = document.getElementById('cartCount');
 
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
+<div id="profilePopup" class="profile-popup">
+  <h3>Profile</h3>
+  <p id="userEmail"></p>
+  <button id="logoutBtn" style="background:red;color:white;">Logout</button>
+  <button id="closeProfile" class="cancel-btn">Close</button>
+</div>
 
-// --- Update Cart Display ---
-function updateCart() {
-  cartItemsContainer.innerHTML = '';
-  let total = 0;
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+  import { 
+    getAuth, 
+    signInWithEmailAndPassword, 
+    createUserWithEmailAndPassword, 
+    GoogleAuthProvider, 
+    signInWithPopup, 
+    onAuthStateChanged, 
+    signOut 
+  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 
-  cart.forEach((item, index) => {
-    total += item.price;
-    const div = document.createElement('div');
-    div.classList.add('cart-item');
-    div.innerHTML = `
-      <img src="${item.image}" alt="${item.name}">
-      <span>${item.name}</span>
-      <span>₹${item.price}</span>
-      <button class="removeBtn" data-index="${index}">🗑</button>
-    `;
-    cartItemsContainer.appendChild(div);
+  // 🔥 Your Firebase config here
+  const firebaseConfig = {
+    apiKey: "AIzaSyDm5CwuDg6wQdGmyA9LWB7l3FP8yG9BS1o",
+  authDomain: "gfx-cheap-games.firebaseapp.com",
+  projectId: "gfx-cheap-games",
+  storageBucket: "gfx-cheap-games.firebasestorage.app",
+  messagingSenderId: "979059324821",
+  appId: "1:979059324821:web:3b2f2958c0fa0a69fde89c"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  const loginBtn = document.getElementById("loginBtn");
+  const loginPopup = document.getElementById("loginPopup");
+  const profilePopup = document.getElementById("profilePopup");
+  const cancelBtn = document.getElementById("cancelBtn");
+  const submitLogin = document.getElementById("submitLogin");
+  const googleSignIn = document.getElementById("googleSignIn");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const closeProfile = document.getElementById("closeProfile");
+  const userEmail = document.getElementById("userEmail");
+
+  // Popup handlers
+  loginBtn.onclick = () => loginPopup.style.display = "block";
+  cancelBtn.onclick = () => loginPopup.style.display = "none";
+  closeProfile.onclick = () => profilePopup.style.display = "none";
+
+  // Manual email/password login
+  submitLogin.onclick = async () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    if (!email || !password) {
+      alert("Please enter email and password");
+      return;
+    }
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      loginPopup.style.display = "none";
+    } catch (error) {
+      if (error.code === "auth/user-not-found") {
+        await createUserWithEmailAndPassword(auth, email, password);
+        loginPopup.style.display = "none";
+      } else {
+        alert(error.message);
+      }
+    }
+  };
+
+  // Google sign-in
+  googleSignIn.onclick = async () => {
+    try {
+      await signInWithPopup(auth, provider);
+      loginPopup.style.display = "none";
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  // Auth state change
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      loginBtn.textContent = "Profile";
+      loginBtn.className = "profile-btn";
+      loginBtn.onclick = () => {
+        userEmail.textContent = `Email: ${user.email}`;
+        profilePopup.style.display = "block";
+      };
+    } else {
+      loginBtn.textContent = "Login";
+      loginBtn.className = "login-btn";
+      loginBtn.onclick = () => loginPopup.style.display = "block";
+    }
   });
 
-  cartTotalEl.textContent = total;
-  cartCountEl.textContent = cart.length;
-  localStorage.setItem('cart', JSON.stringify(cart));
-
-  document.querySelectorAll('.removeBtn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const i = btn.getAttribute('data-index');
-      cart.splice(i, 1);
-      updateCart();
-    });
-  });
-}
-
-// --- Add to Cart ---
-addBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const product = btn.closest('.product');
-    const name = product.getAttribute('data-name');
-    const price = parseInt(product.getAttribute('data-price'));
-    const image = product.querySelector('img').src;
-
-    cart.push({ name, price, image });
-    updateCart();
-    alert(`${name} added to cart!`);
-  });
-});
-
-// --- Show/Hide Cart Modal ---
-cartBtn.addEventListener('click', () => {
-  cartModal.style.display = 'flex';
-});
-cancelBtn.addEventListener('click', () => {
-  cartModal.style.display = 'none';
-});
-
-// --- Checkout ---
-checkoutBtn.addEventListener('click', () => {
-  localStorage.setItem('cart', JSON.stringify(cart));
-  window.location.href = 'checkout.html';
-});
-
-// --- Load saved cart on refresh ---
-updateCart();
-
+  // Logout
+  logoutBtn.onclick = async () => {
+    await signOut(auth);
+    profilePopup.style.display = "none";
+    alert("Signed out successfully");
+  };
 </script>
 </body>
 </html>
