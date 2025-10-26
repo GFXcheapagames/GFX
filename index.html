@@ -1,118 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Login with Firebase</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login/Profile Button</title>
+<script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js"></script>
 <style>
-  body {
-    background-color: #0d0d0d;
-    color: white;
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  body { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    background: black; 
+    color: white; 
+    font-family: sans-serif;
   }
-  .login-btn, .profile-btn {
-    background: red;
-    color: white;
+
+  button {
+    padding: 12px 24px;
     border: none;
-    padding: 12px 25px;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
-    transition: 0.2s;
-  }
-  .login-btn:hover, .profile-btn:hover {
-    background: #ff3333;
-  }
-  .popup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #1a1a1a;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px red;
-    width: 350px;
-  }
-  .popup input {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 5px;
-  }
-  .popup button {
-    margin-top: 10px;
-    padding: 10px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  .cancel-btn {
-    background: gray;
+    background: linear-gradient(90deg, #ff1a1a, #b30000);
     color: white;
-    margin-right: 10px;
   }
-  .google-btn {
-    background: white;
-    color: black;
-    font-weight: bold;
-    width: 100%;
-    margin-top: 10px;
-  }
-  .profile-popup {
+
+  #profilePopup {
     display: none;
-    background: #1a1a1a;
-    box-shadow: 0 0 20px red;
-    padding: 20px;
-    border-radius: 10px;
     position: fixed;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 300px;
+    background: #121212;
+    border: 2px solid #ff1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+  }
+
+  #profilePopup button {
+    margin-top: 10px;
+    width: 80%;
   }
 </style>
 </head>
 <body>
 
-<button id="loginBtn" class="login-btn">Login</button>
+<button id="loginBtn">Login</button>
 
-<div id="loginPopup" class="popup">
-  <h2>Login / Sign Up</h2>
-  <input type="email" id="email" placeholder="Email (Required)" required>
-  <input type="text" id="mobile" placeholder="Mobile Number (Optional)">
-  <input type="password" id="password" placeholder="Password (Required)" required>
-  <button id="googleSignIn" class="google-btn">Sign in with Google</button><br>
-  <button id="cancelBtn" class="cancel-btn">Cancel</button>
-  <button id="submitLogin" style="background:red;color:white;">Login</button>
-</div>
-
-<div id="profilePopup" class="profile-popup">
-  <h3>Profile</h3>
+<div id="profilePopup">
   <p id="userEmail"></p>
-  <button id="logoutBtn" style="background:red;color:white;">Logout</button>
-  <button id="closeProfile" class="cancel-btn">Close</button>
+  <button id="logoutBtn">Logout</button>
+  <button id="closeProfileBtn">Close</button>
 </div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-  import { 
-    getAuth, 
-    signInWithEmailAndPassword, 
-    createUserWithEmailAndPassword, 
-    GoogleAuthProvider, 
-    signInWithPopup, 
-    onAuthStateChanged, 
-    signOut 
-  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-
-  // 🔥 Your Firebase config here
+<script>
+  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyDm5CwuDg6wQdGmyA9LWB7l3FP8yG9BS1o",
   authDomain: "gfx-cheap-games.firebaseapp.com",
@@ -122,80 +66,45 @@
   appId: "1:979059324821:web:3b2f2958c0fa0a69fde89c"
   };
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
+  const app = firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
 
   const loginBtn = document.getElementById("loginBtn");
-  const loginPopup = document.getElementById("loginPopup");
   const profilePopup = document.getElementById("profilePopup");
-  const cancelBtn = document.getElementById("cancelBtn");
-  const submitLogin = document.getElementById("submitLogin");
-  const googleSignIn = document.getElementById("googleSignIn");
-  const logoutBtn = document.getElementById("logoutBtn");
-  const closeProfile = document.getElementById("closeProfile");
   const userEmail = document.getElementById("userEmail");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const closeProfileBtn = document.getElementById("closeProfileBtn");
 
-  // Popup handlers
-  loginBtn.onclick = () => loginPopup.style.display = "block";
-  cancelBtn.onclick = () => loginPopup.style.display = "none";
-  closeProfile.onclick = () => profilePopup.style.display = "none";
-
-  // Manual email/password login
-  submitLogin.onclick = async () => {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    if (!email || !password) {
-      alert("Please enter email and password");
-      return;
-    }
-
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      loginPopup.style.display = "none";
-    } catch (error) {
-      if (error.code === "auth/user-not-found") {
-        await createUserWithEmailAndPassword(auth, email, password);
-        loginPopup.style.display = "none";
-      } else {
-        alert(error.message);
-      }
-    }
-  };
-
-  // Google sign-in
-  googleSignIn.onclick = async () => {
-    try {
-      await signInWithPopup(auth, provider);
-      loginPopup.style.display = "none";
-    } catch (error) {
-      alert(error.message);
-    }
-  };
-
-  // Auth state change
-  onAuthStateChanged(auth, (user) => {
+  // Open profile popup
+  loginBtn.addEventListener("click", () => {
+    const user = auth.currentUser;
     if (user) {
-      loginBtn.textContent = "Profile";
-      loginBtn.className = "profile-btn";
-      loginBtn.onclick = () => {
-        userEmail.textContent = `Email: ${user.email}`;
-        profilePopup.style.display = "block";
-      };
+      userEmail.textContent = `Logged in as: ${user.email || "Unknown"}`;
+      profilePopup.style.display = "block";
     } else {
-      loginBtn.textContent = "Login";
-      loginBtn.className = "login-btn";
-      loginBtn.onclick = () => loginPopup.style.display = "block";
+      alert("Not logged in! Implement login flow here.");
     }
   });
 
-  // Logout
-  logoutBtn.onclick = async () => {
-    await signOut(auth);
+  closeProfileBtn.addEventListener("click", () => {
     profilePopup.style.display = "none";
-    alert("Signed out successfully");
-  };
+  });
+
+  logoutBtn.addEventListener("click", async () => {
+    await auth.signOut();
+    loginBtn.textContent = "Login";
+    profilePopup.style.display = "none";
+  });
+
+  // Auth state listener
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      loginBtn.textContent = "Profile";
+    } else {
+      loginBtn.textContent = "Login";
+    }
+  });
 </script>
+
 </body>
 </html>
