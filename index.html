@@ -3,60 +3,64 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login/Profile Button</title>
+<title>Red + Black E-commerce Demo</title>
+
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js"></script>
+
 <style>
-  body { 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    height: 100vh; 
-    background: black; 
-    color: white; 
-    font-family: sans-serif;
-  }
-
-  button {
-    padding: 12px 24px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    background: linear-gradient(90deg, #ff1a1a, #b30000);
-    color: white;
-  }
-
-  #profilePopup {
-    display: none;
-    position: fixed;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    background: #121212;
-    border: 2px solid #ff1a1a;
-    padding: 20px;
-    border-radius: 12px;
-    text-align: center;
-  }
-
-  #profilePopup button {
-    margin-top: 10px;
-    width: 80%;
-  }
+  body { font-family: Poppins,sans-serif; background: #0e0e0e; color: white; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+  h1 { color: #ff1a1a; }
+  button { background: linear-gradient(90deg,#ff1a1a,#b30000); border: none; color: white; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin: 5px; }
+  button:hover { transform: scale(1.05); }
+  .product { border: 2px solid #ff1a1a; padding: 20px; margin: 10px; border-radius: 10px; text-align: center; }
+  #loginModal, #profilePopup { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); justify-content:center; align-items:center; z-index:999; }
+  .modal-content { background:#121212; border:2px solid #ff1a1a; padding:30px; border-radius:15px; text-align:center; }
+  input { width:90%; padding:10px; margin:8px 0; border-radius:8px; border:1px solid #ff1a1a; background:#0e0e0e; color:white; }
+  .cart-item { margin:5px 0; }
 </style>
 </head>
 <body>
 
-<button id="loginBtn">Login</button>
+<h1>Sample E-commerce Demo</h1>
 
+<div>
+  <button id="loginBtn">Login</button>
+  <button id="cartBtn">Cart (0)</button>
+</div>
+
+<div class="product">
+  <h3>Random Product</h3>
+  <p>Price: $<span id="productPrice"></span></p>
+  <button id="addCartBtn">Add to Cart</button>
+</div>
+
+<!-- LOGIN POPUP -->
+<div id="loginModal">
+  <div class="modal-content">
+    <h2>Login / Sign Up</h2>
+    <input type="email" id="email" placeholder="Email (required)">
+    <input type="text" id="mobile" placeholder="Mobile (optional)">
+    <input type="password" id="password" placeholder="Password (required)">
+    <button id="emailLoginBtn">Login / Sign Up</button>
+    <button id="googleLoginBtn">Sign in with Google</button>
+    <button id="cancelLoginBtn" style="background:#222;">Cancel</button>
+  </div>
+</div>
+
+<!-- PROFILE POPUP -->
 <div id="profilePopup">
-  <p id="userEmail"></p>
-  <button id="logoutBtn">Logout</button>
-  <button id="closeProfileBtn">Close</button>
+  <div class="modal-content">
+    <p id="userEmail"></p>
+    <button id="logoutBtn">Logout</button>
+    <button id="closeProfileBtn" style="background:#222;">Close</button>
+  </div>
 </div>
 
 <script>
-  // Firebase config
+  // 🔥 Firebase Config
   const firebaseConfig = {
     apiKey: "AIzaSyDm5CwuDg6wQdGmyA9LWB7l3FP8yG9BS1o",
   authDomain: "gfx-cheap-games.firebaseapp.com",
@@ -65,44 +69,94 @@
   messagingSenderId: "979059324821",
   appId: "1:979059324821:web:3b2f2958c0fa0a69fde89c"
   };
-
   const app = firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
+  const db = firebase.firestore();
 
+  // 🔥 Elements
   const loginBtn = document.getElementById("loginBtn");
+  const loginModal = document.getElementById("loginModal");
+  const cancelLoginBtn = document.getElementById("cancelLoginBtn");
+  const emailLoginBtn = document.getElementById("emailLoginBtn");
+  const googleLoginBtn = document.getElementById("googleLoginBtn");
   const profilePopup = document.getElementById("profilePopup");
-  const userEmail = document.getElementById("userEmail");
   const logoutBtn = document.getElementById("logoutBtn");
   const closeProfileBtn = document.getElementById("closeProfileBtn");
+  const userEmailDisplay = document.getElementById("userEmail");
 
-  // Open profile popup
-  loginBtn.addEventListener("click", () => {
+  const addCartBtn = document.getElementById("addCartBtn");
+  const cartBtn = document.getElementById("cartBtn");
+
+  const productPriceSpan = document.getElementById("productPrice");
+  const product = { id: "prod1", name: "Random Product", price: Math.floor(Math.random()*100)+1 };
+
+  productPriceSpan.textContent = product.price;
+
+  let cart = [];
+
+  // 🔥 OPEN LOGIN
+  loginBtn.addEventListener("click", () => loginModal.style.display="flex");
+  cancelLoginBtn.addEventListener("click", () => loginModal.style.display="none");
+
+  // 🔥 Email Login
+  emailLoginBtn.addEventListener("click", async ()=>{
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    if(!email||!password){ alert("Email & password required"); return; }
+    try{
+      await auth.signInWithEmailAndPassword(email,password);
+      loginModal.style.display="none";
+    }catch(err){
+      if(err.code=="auth/user-not-found"){
+        await auth.createUserWithEmailAndPassword(email,password);
+        loginModal.style.display="none";
+      }else{ alert(err.message); }
+    }
+  });
+
+  // 🔥 Google Login
+  googleLoginBtn.addEventListener("click", async ()=>{
+    const provider = new firebase.auth.GoogleAuthProvider();
+    try{ await auth.signInWithPopup(provider); loginModal.style.display="none"; }
+    catch(err){ alert(err.message); }
+  });
+
+  // 🔥 Auth State
+  auth.onAuthStateChanged(async user=>{
+    if(user){
+      loginBtn.textContent="Profile";
+      loginBtn.onclick=()=>{ 
+        userEmailDisplay.textContent="Logged in as: "+user.email;
+        profilePopup.style.display="flex";
+      };
+      // load cart
+      const cartDoc = await db.collection("carts").doc(user.uid).get();
+      cart = cartDoc.exists?cartDoc.data().items:[];
+      updateCartCount();
+    } else {
+      loginBtn.textContent="Login";
+      loginBtn.onclick=()=>{ loginModal.style.display="flex"; };
+      cart=[]; updateCartCount();
+    }
+  });
+
+  closeProfileBtn.onclick=()=>profilePopup.style.display="none";
+  logoutBtn.onclick=()=>auth.signOut();
+
+  // 🔥 CART HANDLING
+  function updateCartCount(){ cartBtn.textContent=`Cart (${cart.length})`; }
+
+  addCartBtn.addEventListener("click", async ()=>{
     const user = auth.currentUser;
-    if (user) {
-      userEmail.textContent = `Logged in as: ${user.email || "Unknown"}`;
-      profilePopup.style.display = "block";
-    } else {
-      alert("Not logged in! Implement login flow here.");
-    }
-  });
-
-  closeProfileBtn.addEventListener("click", () => {
-    profilePopup.style.display = "none";
-  });
-
-  logoutBtn.addEventListener("click", async () => {
-    await auth.signOut();
-    loginBtn.textContent = "Login";
-    profilePopup.style.display = "none";
-  });
-
-  // Auth state listener
-  auth.onAuthStateChanged(user => {
-    if (user) {
-      loginBtn.textContent = "Profile";
-    } else {
-      loginBtn.textContent = "Login";
-    }
+    if(!user){ alert("Login to add to cart"); return; }
+    const cartRef = db.collection("carts").doc(user.uid);
+    // add product
+    const existingIndex = cart.findIndex(item=>item.id===product.id);
+    if(existingIndex>=0){ cart[existingIndex].quantity+=1; } 
+    else { cart.push({...product, quantity:1}); }
+    await cartRef.set({ items:cart });
+    updateCartCount();
+    alert("Added to cart!");
   });
 </script>
 
