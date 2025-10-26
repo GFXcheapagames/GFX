@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Red + Black E-commerce Demo</title>
+<title>E-commerce Demo</title>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js"></script>
@@ -24,7 +24,7 @@
 </head>
 <body>
 
-<h1>Sample E-commerce Demo</h1>
+<h1>Random E-commerce Demo</h1>
 
 <div>
   <button id="loginBtn">Login</button>
@@ -60,7 +60,7 @@
 </div>
 
 <script>
-  // 🔥 Firebase Config
+  // 🔥 Firebase Config (replace with your actual config)
   const firebaseConfig = {
     apiKey: "AIzaSyDm5CwuDg6wQdGmyA9LWB7l3FP8yG9BS1o",
   authDomain: "gfx-cheap-games.firebaseapp.com",
@@ -89,12 +89,11 @@
 
   const productPriceSpan = document.getElementById("productPrice");
   const product = { id: "prod1", name: "Random Product", price: Math.floor(Math.random()*100)+1 };
-
   productPriceSpan.textContent = product.price;
 
   let cart = [];
 
-  // 🔥 OPEN LOGIN
+  // 🔥 Login Modal
   loginBtn.addEventListener("click", () => loginModal.style.display="flex");
   cancelLoginBtn.addEventListener("click", () => loginModal.style.display="none");
 
@@ -150,7 +149,6 @@
     const user = auth.currentUser;
     if(!user){ alert("Login to add to cart"); return; }
     const cartRef = db.collection("carts").doc(user.uid);
-    // add product
     const existingIndex = cart.findIndex(item=>item.id===product.id);
     if(existingIndex>=0){ cart[existingIndex].quantity+=1; } 
     else { cart.push({...product, quantity:1}); }
@@ -159,6 +157,5 @@
     alert("Added to cart!");
   });
 </script>
-
 </body>
 </html>
