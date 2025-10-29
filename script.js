@@ -22,7 +22,7 @@ const games = [
   { name: "Black Myth Wukong ", price: 249, oldPrice: 469, img: "wukong.jfif" },
   { name: " A Way Out Multiplayer", price: 299, oldPrice: 599, img: "wayout.jfif" },
   { name: "WWE 2K24", price: 399, oldPrice: 599, img: "2k24.jfif" },
-  { name: " Assassins Creed Shadows Deluxe Edition", price: 2399, oldPrice: 599, img: "deluxe.jfif" },
+  { name: " Assassins Creed Shadows Deluxe Edition", price: 399, oldPrice: 599, img: "deluxe.jfif" },
   // images
 ];
 
@@ -87,4 +87,5 @@ function removeFromCart(index) {
   cart.splice(index, 1);
   updateCart();
 }
+
 
